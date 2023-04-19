@@ -12,14 +12,15 @@ ADD requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 # Install Opencv and controlnet-aux
-RUN pip install -q opencv-contrib-python
-RUN pip install -q controlnet_aux
-RUN pip install runpod
+RUN pip3 install -q opencv-contrib-python
+RUN pip3 install -q controlnet_aux
+RUN pip3 install runpod
 # Add your model weight files 
 # (in this case we have a python script)
 ADD download.py .
 RUN python3 download.py
 
+RUN pip3 install triton
 
 # Add your custom app code, init() and inference()
 ADD app.py .
