@@ -20,9 +20,9 @@ def init():
     device = torch.device(dev)
 
     controlnet = ControlNetModel.from_pretrained(
-        "lllyasviel/sd-controlnet-canny", torch_dtype=torch.float16)
+        "lllyasviel/sd-controlnet-openpose", torch_dtype=torch.float16)
     model = StableDiffusionControlNetPipeline.from_pretrained(
-        "runwayml/stable-diffusion-v1-5",
+        "XpucT/Deliberate",
         controlnet=controlnet,
         safety_checker=None,
         torch_dtype=torch.float16).to(device)
@@ -72,14 +72,14 @@ def inference(model, model_inputs: dict) -> dict:
     image = image[:, :, None]
     image = np.concatenate([image, image, image], axis=2)
 
-    canny_image = Image.fromarray(image)
+    openpose_image = Image.fromarray(image)
     buffered = BytesIO()
-    canny_image.save(buffered, format="JPEG")
-    canny_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
+    openpose_image.save(buffered, format="JPEG")
+    openpose_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
    
     output = model(prompt,
-                   canny_image,
+                   openpose_image,
                    negative_prompt=negative_prompt,
                    num_inference_steps=5,)
 
@@ -89,7 +89,7 @@ def inference(model, model_inputs: dict) -> dict:
     image_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
     # Return the results as a dictionary
-    return {'canny_base64': canny_base64, 'image_base64': image_base64}
+    return {'openpose_base64': openpose_base64, 'image_base64': image_base64}
 
 if __name__ == "__main__":
     app.serve()
