@@ -14,7 +14,7 @@ RUN pip3 install -r requirements.txt
 # Install Opencv and controlnet-aux
 RUN pip install -q opencv-contrib-python
 RUN pip install -q controlnet_aux
-
+RUN pip install runpod
 # Add your model weight files 
 # (in this case we have a python script)
 ADD download.py .
